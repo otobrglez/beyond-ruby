@@ -12,7 +12,7 @@ nix-shell ~/shell.nix
 
 ## Ruby side of things
 
-Use [stations-cli.rb](./stations-cli.rb) to interact with logic directly.
+Use [stations-cli.rb](stations-rb/stations-cli.rb) to interact with logic directly.
 
 ```bash
 ./stations-cli.rb near -q "dunajska 5, 1000 ljubljana" -s 10
@@ -21,10 +21,16 @@ Use [stations-cli.rb](./stations-cli.rb) to interact with logic directly.
 ./stations-cli.rb near_duration_par -q "dunajska 5, 1000 ljubljana" -s 10
 ```
 
-Spawn the [server.rb](./server.rb) via Puma
+Spawn the [server.rb](stations-rb/server.rb) via Puma
 
 ```bash
 bundle exec puma -p 8776
+```
+
+## Load testing
+
+```bash
+locust -f br_locust/locustfile.py --host http://0.0.0.0:8776 --tags v1
 ```
 
 ## Author

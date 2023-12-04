@@ -1,3 +1,18 @@
+# Python
+**/*.iml
+_build/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+
+
+# Scala
 .DS_Store
 *.class
 *.log
