@@ -10,7 +10,7 @@ This project uses `nix-shell` to make thing nicer and reproducable.
 nix-shell ~/shell.nix
 ```
 
-## Ruby side
+## Ruby side of things
 
 Use [stations-cli.rb](./stations-cli.rb) to interact with logic directly.
 
