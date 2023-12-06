@@ -9,3 +9,7 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'puma'
 
+
+gem "sentry-ruby", "~> 5.14"
+
+gem "sentry-raven", "~> 3.1"

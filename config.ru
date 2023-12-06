@@ -1,3 +1,3 @@
 require './stations-rb/server'
-run Sinatra::Application
 
+run Sinatra::Application

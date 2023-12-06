@@ -5,7 +5,7 @@ from locust import FastHttpUser, task, between, tag
 
 class StationsUser(FastHttpUser):
     wait_time = between(1, 5)
-    queries = ["BTC Ljubljana", "Dunajska 5, Ljubljana", "Kongresni trg, Ljubljana", "y"]
+    queries = ["BTC Ljubljana", "Dunajska 5, Ljubljana", "Kongresni trg, Ljubljana"]
 
     @tag('v1', 'near')
     @task

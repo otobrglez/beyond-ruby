@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
+
 $LOAD_PATH << './stations-rb/'
 %w[bundler/setup json ostruct optparse pry distance.rb stations.rb env.rb].each(&method(:require))
 
