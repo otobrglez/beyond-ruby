@@ -12,9 +12,10 @@
         </encoder>
     </appender>
 
-    <logger name="com.pinkstack.beyond.bikestations" level="INFO"/>
+    <logger name="com.pinkstack.beyond.bikestations" level="DEBUG"/>
     <logger name="io.netty" level="INFO"/>
-    <logger name="org.http4s" level="DEBUG"/>
+    <logger name="org.http4s" level="INFO"/>
+    <logger name="org.http4s.client" level="WARN"/>
 
     <root level="trace">
         <appender-ref ref="STDOUT"/>

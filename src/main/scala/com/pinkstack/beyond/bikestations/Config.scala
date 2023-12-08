@@ -1,23 +1,23 @@
-package com.pinkstack.beyond.bikestations.apps
+package com.pinkstack.beyond.bikestations
 
 import cats.effect.IO
-import com.typesafe.config.ConfigFactory
-import io.circe.Decoder.Result
-import io.circe.{Decoder, HCursor}
-import io.circe.config.syntax.*
-import io.circe.derivation.Configuration
-import io.circe.generic.auto.*
-import org.http4s.Uri
 import cats.implicits.*
-import eu.timepit.refined.collection.NonEmpty
+import com.monovore.decline.refined.*
+import com.pinkstack.beyond.bikestations.Config.*
+import com.pinkstack.beyond.bikestations.Config
+import com.typesafe.config.ConfigFactory
 import eu.timepit.refined.*
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.auto.*
-import eu.timepit.refined.collection.NonEmpty
-import com.monovore.decline.refined.*
 import eu.timepit.refined.boolean.{And, Not}
+import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.numeric.*
-import com.pinkstack.beyond.bikestations.apps.Config.ApiKey
+import io.circe.Decoder.Result
+import io.circe.config.syntax.*
+import io.circe.derivation.Configuration
+import io.circe.generic.auto.*
+import io.circe.{Decoder, HCursor}
+import org.http4s.Uri
 
 final case class Config private (
   prominfoQueryEndpoint: Uri,
