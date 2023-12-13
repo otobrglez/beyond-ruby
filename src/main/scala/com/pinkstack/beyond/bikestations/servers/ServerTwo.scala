@@ -31,6 +31,7 @@ object ServerTwo:
     for
       config       <- Config.load.toResource
       client       <- EmberClientBuilder.default[IO].build
+      
       stationsList <- Ref.empty[IO, List[Station]].toResource
 
       refreshing = StationsClient

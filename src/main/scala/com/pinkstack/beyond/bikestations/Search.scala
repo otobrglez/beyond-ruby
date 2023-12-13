@@ -36,11 +36,14 @@ object Destination:
 object Distance:
   def haversine(a: Location, b: Location): Double = Haversine.distance(a.latitude, a.longitude, b.latitude, b.longitude)
 
-final class Search private (using config: Config, client: Client[IO]):
+final class Search private (using
+  config: Config,
+  client: Client[IO]
+):
   def near(query: Query, size: Size): IO[List[Destination]] =
     for
-      stations <- StationsClient.getAll(config, client)
-      location <- PositionStackClient.getLocation(config, client, query)
+      stations <- StationsClient.all
+      location <- PositionStackClient.query(query)
       sorted = stations
         .filter(_.bikeStandFree > 0)
         .map(Destination.from(origin = location)(Distance.haversine))
@@ -50,8 +53,8 @@ final class Search private (using config: Config, client: Client[IO]):
 
   def nearPar(query: Query, size: Size): IO[List[Destination]] =
     (
-      StationsClient.getAll(config, client),
-      PositionStackClient.getLocation(config, client, query)
+      StationsClient.all,
+      PositionStackClient.query(query)
     ).parMapN { case (stations, location) =>
       stations
         .filter(_.bikeStandFree > 0)
@@ -72,6 +75,28 @@ final class Search private (using config: Config, client: Client[IO]):
     }
 
   def nearDuration(
+    query: Query,
+    size: Size
+  ): IO[List[Destination]] =
+    (
+      StationsClient.all,
+      PositionStackClient.query(query)
+    ).parFlatMapN { case (stations, location) =>
+      stations
+        .filter(_.bikeStandFree > 0)
+        .parTraverse(Destination.fromF(location)(Distance.haversine))
+        .map(_.map(_.station))
+        .flatMap(
+          _.parTraverse(station =>
+            OpenrouteClient
+              .direction(location)(station)
+              .map(direction => Destination(station, direction.distance, Some(direction.duration)))
+          )
+        )
+        .map(_.sortBy(_.duration).take(size))
+    }
+
+  def nearDuration2(
     query: Query,
     size: Size,
     scopeFactor: Double = 1.6
