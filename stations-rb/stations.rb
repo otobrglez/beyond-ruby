@@ -43,7 +43,7 @@ class Stations
       location = Stations.location_of(query)
       stations = Stations.bike_stations
       stations
-        .map { |s| s.merge(distance: Distance.geo(s, location)) }
+        .map { |s| s.merge(distance: Distance.haversine(s, location)) }
         .sort_by { _1.fetch(:distance) }
         .take(size)
     end
@@ -55,7 +55,7 @@ class Stations
         Thread.new { Stations.location_of(query) }
       ].map(&:value)
 
-      stations.map { |s| s.merge(distance: Distance.geo(s, location)) }
+      stations.map { |s| s.merge(distance: Distance.haversine(s, location)) }
               .sort_by { _1.fetch(:distance) }
               .take(size)
     end
@@ -79,7 +79,7 @@ class Stations
       location = Stations.location_of(query)
       stations = Stations.bike_stations
       stations
-        .map { |station| station.merge(distance: Distance.geo(station, location)) }
+        .map { |station| station.merge(distance: Distance.haversine(station, location)) }
         .sort_by { _1[:distance] }
         .take((size * 1.6).ceil)
         .map { |station| station.merge(Stations.directions(location, station)) }
@@ -95,7 +95,7 @@ class Stations
         Thread.new { Stations.location_of(query) }
       ].map(&:value)
 
-      stations.map { |s| s.merge(distance: Distance.geo(s, location)) }
+      stations.map { |s| s.merge(distance: Distance.haversine(s, location)) }
               .sort_by { _1[:distance] }
               .take((size * 1.6).ceil)
               .map { |station| Thread.new { station.merge(Stations.directions(location, station)) } }

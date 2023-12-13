@@ -29,19 +29,19 @@ object ServerTwo:
 
   def server(port: Port): Resource[IO, org.http4s.server.Server] =
     for
-      config <- Config.load.toResource
-      client <- EmberClientBuilder.default[IO].build
+      config       <- Config.load.toResource
+      client       <- EmberClientBuilder.default[IO].build
+      stationsList <- Ref.empty[IO, List[Station]].toResource
 
-      stations <- Ref.empty[IO, List[Station]].toResource
-
-      refreshing = (
-        logger.getLogger.info("Refreshing stations list") *>
-          StationsClient.getAll(config, client).flatTap(stations.set).delayBy(10.seconds)
-      ).foreverM
+      refreshing = StationsClient
+        .getAll(config, client)
+        .flatTap(stationsList.set)
+        .delayBy(10.seconds)
+        .foreverM
 
       searchApp = ServerTwo { (query, size) =>
         (
-          stations.get,
+          stationsList.get,
           PositionStackClient.getLocation(config, client, query)
         ).parFlatMapN { case (stations, location) =>
           stations
@@ -61,6 +61,6 @@ object ServerTwo:
 
       server <- (
         refreshing.toResource,
-        EmberServerBuilder.default[IO].withPort(port).withHttpApp(searchApp).build
+        EmberServerBuilder.default[IO].withHost(ipv4"0.0.0.0").withPort(port).withHttpApp(searchApp).build
       ).parMapN((_, server) => server)
     yield server

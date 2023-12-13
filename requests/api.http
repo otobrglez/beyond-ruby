@@ -1,0 +1,21 @@
+### Get stations near (basic)
+@query=Računalniški Muzej
+@size=5
+GET {{host}}/v1/near?query={{query}}&size={{size}}
+Accept: application/json
+
+### Get stations near (using parallelism)
+GET {{host}}/v2/near?query={{query}}&size={{size}}
+Accept: application/json
+
+### Get stations near walking distance (naive)
+GET {{host}}/v3/near?query={{query}}&size={{size}}
+Accept: application/json
+
+### [Ruby] Get stations near walking distance (with threads (better)
+GET http://0.0.0.0:8776/v4/near?query={{query}}&size={{size}}
+Accept: application/json
+
+### [Scala] Get stations near walking distance (FP to the max)
+GET http://0.0.0.0:4445/v5/near?query={{query}}&size={{size}}
+Accept: application/json

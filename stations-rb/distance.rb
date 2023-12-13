@@ -16,7 +16,7 @@ class Distance
     rm * c # Delta in meters
   end
 
-  def self.geo(a, b)
+  def self.haversine(a, b)
     distance(
       [
         a.fetch(:latitude),

@@ -41,13 +41,11 @@ final class Search private (using config: Config, client: Client[IO]):
     for
       stations <- StationsClient.getAll(config, client)
       location <- PositionStackClient.getLocation(config, client, query)
-      sorted   <- IO {
-        stations
-          .filter(_.bikeStandFree > 0)
-          .map(Destination.from(location)(Distance.haversine))
-          .sortBy(_.distance)
-          .take(size)
-      }
+      sorted = stations
+        .filter(_.bikeStandFree > 0)
+        .map(Destination.from(origin = location)(Distance.haversine))
+        .sortBy(_.distance)
+        .take(size)
     yield sorted
 
   def nearPar(query: Query, size: Size): IO[List[Destination]] =

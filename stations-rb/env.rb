@@ -25,11 +25,11 @@ class Env
     end
 
     def positionstack_api_key
-      ENV.fetch('POSITIONSTACK_API_KEY').freeze
+      ENV.fetch('POSITIONSTACK_API_KEY').split("|").first.freeze
     end
 
     def openroute_api_key
-      ENV.fetch('OPENROUTE_API_KEY').freeze
+      ENV.fetch('OPENROUTE_API_KEY').split("|").first.freeze
     end
 
     def openroute_directions_endpoint
